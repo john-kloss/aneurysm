@@ -1,0 +1,146 @@
+// MDL v1 utf8
+network  {
+  watchlist = ""
+}
+module _MERCIA_local_CutWEM2DMacro {
+  internal  {
+    frame = "-367 -331 224 56"
+    moduleGroupName = ""
+    localMacro = 1
+    windows  {
+      window _default {
+        geometry = "600 146 1020 1000"
+        sizeHint = "1020 1000"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = _MERCIA_local_CutWEM2DMacro
+    SaveWEM = C:/Users/user/Desktop/testest.obj
+  }
+}
+module Comment {
+  internal  {
+    frame = "213 -51 88 56"
+    moduleGroupName = ""
+    windows  {
+      window _default {
+        geometry = "805 201 256 208"
+        sizeHint = "256 208"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = Comment
+    comment = "Draw a contour onto the 3D viewer. The part of the WEM that is visible inside the contour is removed.
+
+Keep CTRL pressed while drawing a contour to add the original nodes back."
+  }
+}
+module MinMaxScan {
+  internal  {
+    frame = "-303 13 112 56"
+    moduleGroupName = ""
+  }
+  fields  {
+    instanceName = MinMaxScan2
+    updateMode = AutoUpdate
+    typeSelect = "Proposed Data Type"
+    preferredIntType = PreferUnsigned
+  }
+}
+module Bypass {
+  internal  {
+    frame = "-347 105 184 64"
+    moduleGroupName = ""
+    showNetworkPanel = true
+    windows  {
+      window _default {
+        geometry = "917 619 148 25"
+        sizeHint = "123 25"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = BypassAfterLoadMacro
+    noBypass = FALSE
+  }
+}
+module _MERCIA_local_CropROIMacro2 {
+  internal  {
+    frame = "-351 -107 192 56"
+    moduleGroupName = ""
+    localMacro = 1
+    windows  {
+      window _default {
+        geometry = "416 62 1036 1013"
+        sizeHint = "1052 1032"
+        wasOpen = no
+      }
+      window _automatic {
+        geometry = "1123 303 500 600"
+        sizeHint = "260 223"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = _MERCIA_local_CropROIMacro2
+    LutCenter = 0.35750013589859
+    LutWidth = 0.042
+    IsoMinValue = 9016.5107421875
+    ThreshWEMSmallerParts = 65
+    SaveWEM = C:/Users/user/Desktop/Segm1.obj
+  }
+}
+module _MERCIA_local_LoadMacro {
+  internal  {
+    frame = "-347 213 184 56"
+    moduleGroupName = ""
+    localMacro = 1
+    windows  {
+      window _default {
+        geometry = "474 43 1020 1037"
+        sizeHint = "1020 1037"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = _MERCIA_local_LoadMacro
+    Convert = C:/Users/glasser/Documents/MeVis/ImageData
+    Load = "S:/Datenbank/Sortieren Lena und Mareen/ME_20171206/Original_Dateien/ME_20171206_2_EE_normal.dcm"
+    LoadDirectDicom = C:/Uni/MAS_10/Hw_20170703
+    SwitchForInput = 0
+    InputChoiceInteger = 0
+  }
+}
+module BaseBypass {
+  internal  {
+    frame = "-347 -223 184 64"
+    moduleGroupName = ""
+    windows  {
+      window _default {
+        geometry = "848 445 241 94"
+        sizeHint = "241 94"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = BypassAfterCropROIMacro
+    bypass = TRUE
+    noBypass = FALSE
+  }
+}
+connections  {
+  _MERCIA_local_CutWEM2DMacro.meshIn0 = BypassAfterCropROIMacro.baseOut0
+  MinMaxScan2.input0 = BypassAfterLoadMacro.output0
+  BypassAfterLoadMacro.input0 = _MERCIA_local_LoadMacro.image0
+  _MERCIA_local_CropROIMacro2.imageIn0 = MinMaxScan2.output0
+  BypassAfterCropROIMacro.baseIn0 = _MERCIA_local_CropROIMacro2.meshOut0
+}
+networkModel = ""

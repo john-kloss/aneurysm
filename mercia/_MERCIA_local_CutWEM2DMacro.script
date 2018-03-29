@@ -1,0 +1,55 @@
+Interface  {
+  Inputs {
+    Field meshIn0{
+      internalName = BaseBypass.baseIn0
+    }
+  }
+  Outputs {
+    Field meshOut0{
+      internalName = BaseBypass.baseOut0
+    }
+  }
+  Parameters {
+    Field SaveWEM{internalName = WEMSave.filename}
+    Field SaveWEMTrigger{internalName = WEMSave.apply}
+  }
+}
+
+Window{
+  // 180 + 840
+  Horizontal{
+    width  = 1020
+    height = 1000
+    SpacerX {width = 10 expandX = 0}
+    Vertical{
+      Viewer SoExaminerViewer.self{
+        type = SoExaminerViewer
+        expandX = 1 
+        expandY = 1 
+        width = 600
+        height = 600
+      }
+      Label{
+                
+        title = "Draw a contour onto the 3D viewer. The part of the WEM that is visible inside the contour is removed." 
+        style {titleFont {italic = Yes} }
+      } 
+      Label{
+                
+        title = "Keep CTRL pressed while drawing a contour to add the original nodes back." 
+        style {titleFont {italic = Yes} }
+      } 
+      Label {title = ""}
+      Field SaveWEM {
+        title        = "Save mesh to (*.obj)"
+        browseButton = ON
+        browseMode   = save
+      }
+      Field SaveWEMTrigger {
+        title        = "Save"
+        browseButton = ON
+        browseMode   = save
+      }
+    }
+  }
+}

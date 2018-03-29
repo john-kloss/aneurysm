@@ -1,0 +1,24 @@
+// MDL v1 utf8
+network  {
+  watchlist = ""
+}
+module MERCIA_local_2 {
+  internal  {
+    frame = "529 69 128 56"
+    moduleGroupName = ""
+    localMacro = 1
+    windows  {
+      window _default {
+        geometry = "436 364 1249 1000"
+        sizeHint = "1249 1010"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = MERCIA_local_2
+    Scriptstatus = 0
+  }
+}
+connections = ""
+networkModel = ""

@@ -1,0 +1,16 @@
+// MDL v1 utf8
+network  {
+  watchlist = ""
+}
+module _MERCIA_local_CutWEM2DMacro {
+  internal  {
+    frame = "487 305 224 56"
+    moduleGroupName = ""
+    localMacro = 1
+  }
+  fields  {
+    instanceName = _MERCIA_local_CutWEM2DMacro
+  }
+}
+connections = ""
+networkModel = ""

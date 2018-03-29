@@ -1,0 +1,152 @@
+//----------------------------------------------------------------------------------
+//! Macro module MERCIA_local
+/*!
+// \file    MERCIA_local.script
+// \author  glasser
+// \date    2015-07-17
+//
+// MERCIA_local_2 framework
+*/
+//----------------------------------------------------------------------------------
+
+
+
+Interface {
+  Inputs {}
+  Outputs {}
+  Parameters {
+    Field Scriptstatus{
+      type  = Integer
+      value = 0
+    }
+    Field LoadDataButton{
+      type = Trigger
+    }
+    
+  }
+}
+
+
+Commands {
+  source      = $(LOCAL)/MERCIA_local_2.py
+  initCommand = "*py: init(ctx) *"  
+}
+
+// Zu Beginn: alle Bypässe auf 0 setzen!
+
+Window{
+  width  = 1200
+  height = 1000
+   
+  expandX = 1
+  expandY = 1
+  
+  style{
+    colors {
+      // bg     = "black:$(LOCAL)/MERCIA_Parts_bg.png"
+      // bg     = transparent
+    }
+  }
+
+  // 180 + MAIN WINDOW (180 + 840)
+  Horizontal{
+    //style{colors {bg="black:$(LOCAL)/MERCIA_Parts_bg_left.png"}} 
+    //bgMode = Stretch
+    
+    Grid{
+      //style{colors {bg="black:$(LOCAL)/MERCIA_Parts_bg_left.png"}} 
+      bgMode = Stretch
+      
+      alignY  = Top
+      width   = 185
+      expandX = 0
+      SpacerX {
+        x = 0 y=0
+        w = 1
+      }
+      Label{
+        x     = 1 y=0        
+        //image = "$(LOCAL)/MERCIA7.png"
+      }
+      
+      Button LoadDataButton{
+        x       = 1 y=1
+        title   = "Load Data"
+        command = SelectTab1Function       
+        //image   = $(LOCAL)/MERCIA_LoadButton.png
+        //        style{titleFont {size = 16}}       
+      }     
+      Button {
+        x       = 1 y=2
+        title   = "Extract Initial Mesh"
+        command = SelectTab2Function
+        //style{titleFont {size = 16}}
+        //image  = $(LOCAL)/MERCIA_CropROIButton.png
+      }
+     
+      Button {
+        x       = 1 y=3
+        title   = "Cut Mesh"
+        command = SelectTabWEMCutFunction       
+        //image   = $(LOCAL)/MERCIA_LoadButton.png
+        //        style{titleFont {size = 16}}      
+      }
+      Label{title =""
+        x = 1 y = 4
+      }
+      Label{title =""
+        x = 1 y = 11
+      }
+      Button {
+        x       = 1 y=12
+        title   = "Info"
+        command = SelectTabTitleFunction       
+        //image   = $(LOCAL)/MERCIA_LoadButton.png
+        //        style{titleFont {size = 16}}      
+      }
+    }  
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //    Vertical{
+      
+    TabView{
+      expandX = Yes
+      //style{colors {bg="black:$(LOCAL)/MERCIA_Parts_bg2.png"}} 
+      //bgMode = Stretch
+      name = "MERCIA_MainFrame"
+      mode = invisible
+      
+      //0
+      TabViewItem  {
+        Panel{module = _MERCIA_local_LoadMacro}
+      }
+      //1
+      TabViewItem  {
+        Panel{module = _MERCIA_local_CropROIMacro2}
+        //style{colors {bg="black:$(LOCAL)/MERCIA_Parts_bg2.png"}} 
+        //bgMode = Stretch
+      }
+
+      //2
+      TabViewItem  {
+        Panel{module = _MERCIA_local_CutWEM2DMacro}
+        //style{colors {bg="black:$(LOCAL)/MERCIA_Parts_bg2.png"}} 
+        //bgMode = Stretch
+      }
+      //3
+      TabViewItem  {
+        alignX = Center
+        //alignY = Center
+        Label{ title=" "}
+        Label{ title=" "}
+        Label{ title=" "}
+        Label{ title=" "}
+        Label{ title=" Softwaredemonstrator MERCIA (Mesh ExtRaCtion of Intracranial Aneurysms)"}
+        Label{ title=" ~~ nur lokale Version ~~"}
+        Label{ title=" contact: sylvia@isg.cs.uni-magdeburg.de"}
+      }
+      
+        
+    }
+    //    }
+  }
+}

@@ -1,0 +1,129 @@
+// MDL v1 utf8
+network  {
+  watchlist = ""
+}
+module BaseSwitch {
+  internal  {
+    frame = "-263 725 96 56"
+    moduleGroupName = ""
+    windows  {
+      window _default {
+        geometry = "686 585 563 89"
+        sizeHint = "563 89"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = BaseSwitch
+    currentInput = 0
+    currentOutput = 0
+    numberOfInputs = 2
+    numberOfOutputs = 1
+  }
+}
+module WEMLoad {
+  internal  {
+    frame = "37 877 88 56"
+    moduleGroupName = ""
+    windows  {
+      window _default {
+        geometry = "781 464 372 330"
+        sizeHint = "372 330"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = WEMLoad
+    id = 0
+    autoApply = TRUE
+    autoUpdate = TRUE
+    autoClear = FALSE
+    removePreviousWEMs = TRUE
+    overwriteLabelDescription = TRUE
+    label = ""
+    description = ""
+    shouldComputeNormals = FALSE
+    filename = D:/MedData/Reko/Study2015/E_M_63_surface_2_AfterPurging.obj
+    mirrorFaces = FALSE
+    generateEdges = TRUE
+    triangulateFaces = FALSE
+    triangulationMode = Strip
+  }
+}
+module BaseBypass {
+  internal  {
+    frame = "-423 877 128 56"
+    moduleGroupName = ""
+    showNetworkPanel = true
+  }
+  fields  {
+    instanceName = BaseBypass
+    bypass = TRUE
+    noBypass = FALSE
+  }
+}
+module Switch {
+  internal  {
+    frame = "-159 725 144 72"
+    moduleGroupName = ""
+    showNetworkPanel = true
+    windows  {
+      window _default {
+        geometry = "867 597 200 64"
+        sizeHint = "200 64"
+        wasOpen = no
+      }
+    }
+  }
+  fields  {
+    instanceName = Switch
+    currentInput = 0
+    numberOfInputs = 2
+  }
+}
+module ImageLoad {
+  internal  {
+    frame = "-87 877 96 56"
+    moduleGroupName = ""
+  }
+  fields  {
+    instanceName = ImageLoad
+    filename = ""
+    autoLoad = TRUE
+    readRaw = FALSE
+    rawX = 1
+    rawY = 1
+    rawZ = 1
+    rawC = 1
+    rawT = 1
+    rawU = 1
+    dataTypeRaw = "unsigned int8"
+    planarConfig = Contiguous
+    byteOrder = LittleEndian
+    dataOffset = 0
+    pageSizeHint = "0 0 0 0 0 0"
+    suppressErrorLog = FALSE
+    dicomIgnoreHalfVoxelShift = FALSE
+    suppressMLImageFormatCheckSumTests = FALSE
+  }
+}
+module Bypass {
+  internal  {
+    frame = "-219 877 104 56"
+    moduleGroupName = ""
+    showNetworkPanel = true
+  }
+  fields  {
+    instanceName = Bypass
+    noBypass = FALSE
+  }
+}
+connections  {
+  BaseSwitch.inputBaseObject0 = BaseBypass.baseOut0
+  BaseSwitch.inputBaseObject1 = WEMLoad.outWEM
+  Switch.input0 = Bypass.output0
+  Switch.input1 = ImageLoad.output0
+}
+networkModel = ""

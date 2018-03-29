@@ -1,0 +1,135 @@
+//----------------------------------------------------------------------------------
+//! Macro module _MERCIA_local_LoadMacro
+/*!
+// \file    _MERCIA_local_LoadMacro.script
+// \author  glasser
+// \date    2015-07-17
+//
+// _MERCIA_local_ framework
+*/
+//----------------------------------------------------------------------------------
+
+
+
+Interface {
+  Inputs {}
+  Outputs {
+    Field image0{
+      internalName = Bypass.output0
+    }
+  }
+  Parameters {
+    Field Convert{internalName = OpenImage.browserRootPath type = Trigger}
+    Field Load{internalName = ImageLoad.filename}
+    Field LoadDirectDicom{internalName = DirectDicomImport.source}
+    Field SwitchForInput{internalName = Switch.currentInput}
+    
+    Field InputChoiceInteger{
+      type       = Integer 
+      value      = 0
+    }
+    Field StackImport{internalName = DirectDicomImport.dplImport}
+  }
+}
+
+
+Commands {
+  source = $(LOCAL)/_MERCIA_local_LoadMacro.py
+}
+
+Window{
+  // 180 + 840
+  Horizontal{
+    width = 1020
+    height = 1000
+    SpacerX {width = 10 expandX = 0}
+    Vertical{
+      alignY = Top
+      expandY = 1
+      SpacerY {height = 10}
+      
+      //Box "Load DICOM Data"{
+      Vertical{
+        Label{title = "1. Load DICOM Data " }
+        //Label{title = "2. Refine Center and Width" style{titleFont {size = 14}}}
+        Label{title = ""}
+        alignY = Top
+        Horizontal{        
+          SpacerX {width = 5 expandX = 0}
+          Vertical{
+            //Label{title = "(Optionally: Import image stack into single dataset)" style {colors{bg = whitesmoke}} expandX = 1}
+            Box "(Optionally: Import image stack into single dataset)"{
+              //Button Convert{title ="Convert slices"}
+              Button {
+                name    = importButton
+                title   = "Import..."
+                command = ImportDialog
+              }
+            }
+            Label {title = ""}
+            //Label{title = "Select Input Image Type" style {colors{bg = whitesmoke}} expandX = 1}
+            Box "Load Input Image"{
+              Vertical{
+                
+                Label {title = "Select type of image: single image (left) or stack of images, i.e., directory (right)"}
+                //Field SwitchForInput{}
+                //Field SwitchForInput {}
+                RadioButtonGroup SwitchForInput {
+                  orientation = Horizontal
+                  expandX = 1
+                  name        = InputChoiceIntegerRadioButtonGroup
+                  items {
+                    item 0 { title="Single Image"}
+                    item 1 { title="Image Stack"}
+                  }
+                }
+                //Label {title = ""}
+              }
+              Horizontal{
+                Vertical{
+                  //Label{title = "Select DICOM dataset (single file)" style {colors{bg = whitesmoke}} expandX = 1}
+                  Horizontal{
+                   Label{title = "Select DICOM dataset (single file):"}
+                    Field Load{
+                      title        = ""
+                      browseButton = ON
+                      browseMode   = open
+                    }
+                  }
+                }
+                Label{title="    "}
+                Vertical{
+                  // or use DirectDicomImport
+                  
+                  Horizontal{
+                    Label{title = "Select *clinical* DICOM dataset (many files):" }
+                    Field LoadDirectDicom{
+                      title        = "Load DICOM stack"
+                      browseButton = ON
+                      browseMode   = directory
+                    }
+                    Button StackImport{
+                      title = "Import"
+                    }
+                  }
+                }
+              }
+            }
+            //
+            
+                
+            
+            Viewer View2D.self{
+              type = SoRenderArea     
+              width = 600
+              height = 600
+            }
+          }
+          SpacerX {width = 20 expandX = 0}
+        }    
+      }
+      SpacerY {height = 20}
+    }
+    SpacerX {width = 20 expandX = 0}
+  }
+}

@@ -1,0 +1,59 @@
+//----------------------------------------------------------------------------------
+//! Macro module _MERCIA_local_BaseLoadOrBaseBypass
+/*!
+// \file    _MERCIA_local_BaseLoadOrBaseBypass.script
+// \author  glasser
+// \date    2015-07-17
+//
+// MERCIA framework
+*/
+//----------------------------------------------------------------------------------
+
+
+
+Interface {
+  Inputs {
+    Field Input0{
+      internalName = BaseBypass.baseIn0
+    }
+
+      
+  }
+  Outputs {
+    Field Output0 { internalName = BaseSwitch.outputBaseObject0}
+  }
+  Parameters {
+    Field Choice{
+      type = Bool
+    }
+    Field Choice2{
+      type = Bool
+    }
+    Field Load{internalName = WEMLoad.filename}
+  }
+}
+
+
+Commands {
+  source = $(LOCAL)/_MERCIA_local_BaseLoadOrBaseBypass.py
+ 
+}
+
+Window{
+  Horizontal{
+    
+    Button Choice {      
+      title ="use internal data"
+      command = selectChoice
+    }
+    Button Choice2 {      
+      title = "use external data"
+      command = selectChoice2
+    }
+    Field Load{
+      title        = "Load Mesh"
+      browseButton = ON
+      browseMode   = open
+    }
+  }
+}

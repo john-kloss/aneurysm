@@ -1,0 +1,76 @@
+//----------------------------------------------------------------------------------
+//! Macro module _MERCIA_local_FileLoadOrBypass
+/*!
+// \file    _MERCIA_local_FileLoadOrBypass.script
+// \author  glasser
+// \date    2015-07-17
+//
+// MERCIA framework
+*/
+//----------------------------------------------------------------------------------
+
+
+
+Interface {
+  Inputs {
+    Field Input0{
+      internalName = Bypass.input0
+    }
+
+      
+  }
+  Outputs {
+    Field Output0 { internalName = Switch.output0}
+  }
+  Parameters {
+    Field Choice{
+      type = Bool
+    }
+    Field Choice2{
+      type = Bool
+    }
+    Field Scriptstatus{
+      type = Integer
+      value = 0
+    }
+    Field ChoiceNeedsUpdate{
+      type = Integer
+      value = 0
+      
+    }
+
+    Field Load{internalName = ImageLoad.filename}
+  }
+}
+
+
+
+
+Commands {
+  source = $(LOCAL)/_MERCIA_local_FileLoadOrBypass.py
+  /*FieldListener Choice{
+    command = selectChoice
+  }*/
+  /*FieldListener Choice2{
+    command = selectChoice2
+  }*/
+}
+
+Window{
+  Horizontal{
+    
+    Button Choice {      
+      title ="use internal data"
+      command = selectChoice
+    }
+    Button Choice2 {      
+      title = "use external data"
+      command = selectChoice2
+    }
+    Field Load{
+      title        = "Load DICOM"
+      browseButton = ON
+      browseMode   = open
+    }
+  }
+}

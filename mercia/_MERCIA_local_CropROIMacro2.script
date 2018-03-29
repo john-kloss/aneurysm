@@ -1,0 +1,273 @@
+//----------------------------------------------------------------------------------
+//! Macro module _MERCIA_local_CropROIMacro2
+/*!
+// \file    _MERCIA_local_CropROIMacro2.script
+// \author  glasser
+// \date    2015-07-18
+//
+// MERICA framework
+*/
+//----------------------------------------------------------------------------------
+
+
+
+Interface {
+  Inputs {
+    Field imageIn0{
+      internalName = Bypass.input0
+    }
+  }
+  Outputs {
+    Field meshOut0{
+      internalName = BaseBypass.baseOut0
+    }
+  }
+  Parameters {
+    
+    Field LutCenter{internalName = View3D3.greyCenter}
+    Field LutWidth{internalName = View3D3.greyWidth}
+    Field IsoMinValue{internalName = WEMIsoSurface1.isoMinValue}
+    Field ExtractMesh{internalName = WEMIsoSurface1.startTask}
+    Field WEMpatchListString{internalName = WEMDemergePatches.patchListString}
+    Field ThreshWEMSmallerParts{internalName = WEMDemergePatches.limit}
+    Field SaveWEM{internalName = WEMSave2.filename}
+    
+    Field ResetContours{internalName = SoView2DContour.triggerRemoveAll}
+    Field ResetCenterFromContours{
+      type = Trigger
+    }
+    Field AddContour{internalName = SoView2DContour.triggerAddContour}
+    
+    //Field ResetROIs{internalName = ROISelect.resetAll}
+  }
+}
+
+
+Commands {
+  source = $(LOCAL)/_MERCIA_local_CropROIMacro2.py
+  initCommand = "*py: init(ctx) *"  
+}
+
+Description{
+  Field LutCenter  { min = 0 max = 1 }
+  Field LutWidth   { min = 0 max = 1 }
+}
+
+Window{
+  // 180 + 840
+    
+   
+      width  = 1020
+      height = 1000
+
+    
+      TabView{
+        
+        alignY  = Top
+        expandY = 1
+        
+        name = "TabViewFor_MERCIA_local_CropROIMacro"
+        mode = invisible
+        // --- FIRST TABVIEW ITEM --------------------------------------------------
+        TabViewItem "ROI"{
+          Label{title = "Extract Initial Mesh "}
+          Label{title = "1. Define ROI" }
+          Label{title = ""}
+          Label{title ="Data used:"}
+          Panel{module = _MERCIA_local_FileLoadOrBypass}
+          alignY = Top
+          Horizontal{        
+            SpacerX {width = 20 expandX = 0}
+            Vertical{
+              //Button ResetROIs{title="Reset ROI"}
+              //Panel{module = ROISelect}
+             /* Horizontal{
+                // icons for viewer
+                Image {image = $(LOCAL)/ROICropMacro_Left.png}
+                Image {image = $(LOCAL)/ROICropMacro_Center.png}
+                Image {image = $(LOCAL)/ROICropMacro_Right.png}                            
+              }
+              //Viewer SoRenderArea.self{}
+              */
+              Vertical{              
+                Horizontal {
+                  Viewer View3D3.self{width =500 height = 500 clone = yes}
+                  Viewer ControlView.self{type = SoRenderArea width =500 height = 500 clone = yes}
+                } 
+                Horizontal{
+                  Vertical{
+                    Label{
+                      title = " Hint: Zoom = STRG + mouse wheel click" 
+                      style {titleFont {italic = Yes} }
+                    }
+                    Field LutCenter {                      
+                      step   = 0.05
+                      title  = Center
+                      slider = yes
+                    }
+                    Field LutWidth {
+                      step   = 0.05
+                      title  = Width
+                      slider = yes                      
+                    }                    
+                  }  
+                  
+                  Vertical{
+                    Button ResetContours{title = "Reset Contour"  command = resetContour}
+                    Button ResetCenterFromContours{title = "Update C from Contour" command = updateCenter}
+                  }
+                }
+              }
+              Button {
+                name    = selectTab1
+                title   = "Next Step: Check LUT values"
+                style {colors{button= lightgreen}}//([0.5  0 0])}}
+                command = SelectTab1Function
+                expandX = 1
+              }                      
+            }               
+          }
+        }
+        // --- SECOND TABVIEW ITEM --------------------------------------------------
+        TabViewItem "Check 3D"{
+          Label{title = "Extract Initial Mesh " }
+          Label{title = "2. Refine Center and Width" }
+          Label{title = ""}
+          expandY = 1
+          Viewer View3D3.self{width =500 height = 650 clone = yes}
+          Grid{
+            Field LutCenter {
+              x = 0
+              y = 0
+              step   = 0.05
+              title  = Center
+              slider = yes
+            }
+            Field LutWidth {
+              x = 0
+              y = 1
+              step   = 0.05
+              title  = Width
+              slider = yes
+            }
+            Vertical{
+              x     = 1 y= 1
+              Label{
+                
+                title = "    Hint: Try to set value < 0.05" 
+                style {titleFont {italic = Yes} }
+              } 
+              Label{
+                title = "    Hint: Zoom = STRG + LMB" 
+                style {titleFont {italic = Yes} }
+              }
+            }
+          }
+          Horizontal{
+            alignY  = Bottom
+            expandX = 1
+            Button {
+              name    = selectTab0
+              title   = "Reset ROI"
+              command = SelectTab0Function
+              style{colors{button = lightsalmon}}
+              expandX = 1
+            }
+            Button {
+              name  = finishROI
+              title = "Build Initial Mesh"
+              command = SelectTab2Function
+              style{colors{button = lightgreen}}
+              expandX = 1
+            }
+          }          
+        }
+        // --- THIRD TABVIEW ITEM --------------------------------------------------
+        TabViewItem "Build WEM"{
+          Label{title = "Extract Initial Mesh " }
+          Label{title = "3. Extract Mesh" }
+          Label{title = ""}
+          
+          expandY = 1
+          Grid{
+            Vertical{
+              alignY = Top
+              width = 180
+              x=0 y=0
+              x2 = 1 y2 = 0
+              Label{title="Parameters for Mesh:"}
+              Horizontal{
+                Field IsoMinValue{ title="Iso value:"}
+                Label{title = " ...extracted from Center/Width" 
+                style {titleFont {italic = Yes} }
+                }
+              }
+              Horizontal{
+               /* Button InitializeMesh{
+                  title = "Initialize Mesh"
+                  command = initializeMesh
+                }
+                */
+                Label{title = " ...only necessary when Iso-Value was directly entered" 
+                  style {titleFont {italic = Yes} }  
+                }
+              }
+              Button ExtractMesh{title= "Extract Mesh"}
+              
+              Label{title = ""}
+              Label{title = "Remove small parts"}
+              Field ThreshWEMSmallerParts{title ="min. %"}
+              ListView WEMpatchListString {
+                visibleRows   = 9
+                selectionMode = NoSelection
+              }
+            }
+            Vertical{
+              Label{title ="Masked Image (based on LUT width & center"}
+              width = 840
+              x=0 y=1
+              Viewer ViewMaskedImage.self{type=SoRenderArea height = 350}                
+            }
+            Vertical{
+              x= 1 y= 1
+              Label{title ="Initial Mesh"}
+              Viewer SoExaminerViewer.self{
+                height = 450
+                minimumHeight = 400
+                clone = Yes 
+              }               
+              
+            }
+            
+            Horizontal {
+              x = 0 x2 = 1 y=2
+              
+              Button {
+                name    = selectTab1b
+                title   = "Reset LUT values"
+                command = SelectTab1Function
+                style{colors{button = lightsalmon}}
+                expandX = 1
+              }
+             /* Label{
+                title = "Finished; go on via Main Menu"
+                style {colors {bg = lightgreen}}
+              }*/
+              
+              Field SaveWEM {
+                title        = "Save mesh to (*.obj)"
+                browseButton = ON
+                browseMode   = save
+              }
+              Button {
+                name    = finishROIb
+                title   = "Save initial mesh"
+                command = saveInitialMesh
+                style{colors{button = lightgreen}}
+                expandX = 1
+              }
+            }             
+          }          
+        }
+      }     
+}
